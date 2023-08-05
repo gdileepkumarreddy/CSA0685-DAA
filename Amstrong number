@@ -1,0 +1,24 @@
+#include<stdio.h>
+int main()
+{
+	int num,num1,r,re=0;
+	printf("enter the number");
+	scanf("%d",&num);
+	
+	num1=num;
+	while(num1!=0)
+	{
+		r=num1%10;
+		re+=r*r*r;
+		num1/=10;
+		
+	}
+	{
+	
+	if(re==num)
+	 printf("%d is an armstrong number:",num);
+	else
+	 printf("%d is not an amstrong number",num);
+	return 0;
+    }
+}
