@@ -1,0 +1,19 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_LENGTH 100
+
+int main() {
+    char source[MAX_LENGTH];
+    char destination[MAX_LENGTH];
+
+    printf("Enter a string: ");
+    scanf("%s", source);
+
+    strcpy(destination, source);
+
+    printf("Source string: %s\n", source);
+    printf("Copied string: %s\n", destination);
+
+    return 0;
+}
