@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX_KEYS 10
+
+int keys[MAX_KEYS];
+int freq[MAX_KEYS];
+int dp[MAX_KEYS][MAX_KEYS];
+int root[MAX_KEYS][MAX_KEYS];
+
+int sum(int i, int j) {
+    int s = 0;
+    int k;
+    for ( k = i; k <= j; k++) {
+        s += freq[k];
+    }
+    return s;
+}
+
+int optimalBST(int i, int j) {
+    if (j < i) {
+        return 0;
+    }
+    if (dp[i][j] != -1) {
+        return dp[i][j];
+    }
+
+    dp[i][j] = INT_MAX;
+    int r;
+    for (r = i; r <= j; r++) {
+        int cost = optimalBST(i, r - 1) + optimalBST(r + 1, j) + sum(i, j);
+        if (cost < dp[i][j]) {
+            dp[i][j] = cost;
+            root[i][j] = r;
+        }
+    }
+
+    return dp[i][j];
+}
+
+void printOptimalBST(int i, int j, int depth) {
+    if (i <= j) {
+        int r = root[i][j];
+        printf("%*sKey %d at depth %d\n", depth * 4, "", keys[r], depth);
+        printOptimalBST(i, r - 1, depth + 1);
+        printOptimalBST(r + 1, j, depth + 1);
+    }
+}
+
+int main() {
+    int n;
+
+    printf("Enter the number of keys: ");
+    scanf("%d", &n);
+
+    printf("Enter the keys:\n");
+    int i;
+    for ( i = 0; i < n; i++) {
+        scanf("%d", &keys[i]);
+    }
+
+    printf("Enter the corresponding frequencies:\n");
+   
+    for ( i = 0; i < n; i++) {
+        scanf("%d", &freq[i]);
+    }
+     int j;
+    for ( i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            dp[i][j] = -1;
+        }
+    }
+
+    int minCost = optimalBST(0, n - 1);
+
+    printf("Optimal Binary Search Tree:\n");
+    printOptimalBST(0, n - 1, 0);
+
+    printf("Minimum Cost: %d\n", minCost);
+
+    return 0;
+}
