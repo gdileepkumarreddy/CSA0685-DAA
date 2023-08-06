@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_VERTICES 100
+#define INF 999999
+
+int graph[MAX_VERTICES][MAX_VERTICES];
+int numVertices;
+
+int minKey(int key[], bool mstSet[]) {
+    int min = INF, min_index,v;
+    for (v = 0; v < numVertices; v++) {
+        if (!mstSet[v] && key[v] < min) {
+            min = key[v];
+            min_index = v;
+        }
+    }
+    return min_index;
+}
+
+void printMST(int parent[]) {
+    printf("Edge \tWeight\n");
+    int i;
+    for ( i = 1; i < numVertices; i++) {
+        printf("%d - %d \t%d\n", parent[i], i, graph[i][parent[i]]);
+    }
+}
+
+void primMST() {
+    int parent[MAX_VERTICES];
+    int key[MAX_VERTICES];
+    bool mstSet[MAX_VERTICES];
+    int i;
+
+    for (i = 0; i < numVertices; i++) {
+        key[i] = INF;
+        mstSet[i] = false;
+    }
+
+    key[0] = 0;
+    parent[0] = -1;
+    int count;
+    for (count = 0; count < numVertices - 1; count++) {
+        int u = minKey(key, mstSet);
+        mstSet[u] = true;
+        int v;
+        for ( v = 0; v < numVertices; v++) {
+            if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+        }
+    }
+
+    printMST(parent);
+}
+
+int main() {
+    printf("Enter the number of vertices: ");
+    scanf("%d", &numVertices);
+
+    printf("Enter the adjacency matrix (enter 0 for no edge, and a positive number for the weight of the edge):\n");
+    int i,j;
+    for (i = 0; i < numVertices; i++) {
+        for ( j = 0; j < numVertices; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    printf("Minimum Spanning Tree using Prim's algorithm:\n");
+    primMST();
+
+    return 0;
+}
