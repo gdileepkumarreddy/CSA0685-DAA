@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int reverseNumber(int num) {
+    int reversedNum = 0;
+    
+    while (num != 0) {
+        reversedNum = reversedNum * 10 + num % 10;
+        num /= 10;
+    }
+    
+    return reversedNum;
+}
+
+int main() {
+    int num;
+    
+    printf("Enter a number to reverse: ");
+    scanf("%d", &num);
+    
+    int reversedNum = reverseNumber(num);
+    
+    printf("The reversed number is: %d\n", reversedNum);
+    
+    return 0;
+}
